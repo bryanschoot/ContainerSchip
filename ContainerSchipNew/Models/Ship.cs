@@ -15,6 +15,11 @@ namespace ContainerSchipNew.Models
 
         public Ship() { }
 
+        /// <summary>
+        /// Costructor to create the new ship;
+        /// </summary>
+        /// <param name="maxWeight">Sets the weight of the ship</param>
+        /// <param name="places">Creates a list of places</param>
         public Ship(double maxWeight, List<Place> places)
         {
             MaxWeight = maxWeight;
@@ -27,11 +32,19 @@ namespace ContainerSchipNew.Models
             return $"Max: {MaxWeight} \nMin: {MinWeight}";
         }
 
+        /// <summary>
+        /// Calculate the min weight needed to let the ship sail.
+        /// </summary>
+        /// <returns>The minimum weight</returns>
         public double CalculateMinWeight()
         {
             return Convert.ToDouble(MaxWeight / 2);
         }
 
+        /// <summary>
+        /// Calculates the balance of the ship to prevent it from capseizing.
+        /// </summary>
+        /// <returns></returns>
         public decimal CalculateBalance()
         {
             double row1 = 0;
@@ -48,6 +61,10 @@ namespace ContainerSchipNew.Models
             return Balance;
         }
 
+        /// <summary>
+        /// Rebalance the ship if it is under above 20%
+        /// </summary>
+        /// TODO Optimize BalanceShip section
         public void BalanceShip()
         {
             if (UpperRow > LowerRow)

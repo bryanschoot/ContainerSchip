@@ -10,6 +10,12 @@ namespace ContainerSchipNew.Models
 
         public Container() { }
 
+        /// <summary>
+        /// New container constructor
+        /// </summary>
+        /// <param name="weight">Weight of the container</param>
+        /// <param name="valuable">Bool if item is checked true, if true the container is cooled</param>
+        /// <param name="cooled">Bool if item is checked true, if true the item is cooled</param>
         public Container(double weight, bool valuable, bool cooled)
         {
             Weight = weight;

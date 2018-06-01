@@ -59,11 +59,12 @@ namespace ContainerSchipNew.Logic
         /// <summary>
         /// TrySort will check if the ship can be made.
         /// </summary>
+        /// TODO optimize TrySort()
         public void TrySort()
         {
             var valuable = 0;
             double _cooled = 0;
-            double _max = 300000;//this.Ship.Places[3].MaxWeight + this.Ship.Places[6].MaxWeight; //Gets the front side of the ships and count them;
+            double _max = 300000; //this.Ship.Places[3].MaxWeight + this.Ship.Places[6].MaxWeight; //Gets the front side of the ships and count them;
 
             foreach (var container in containers)
             {
@@ -75,6 +76,7 @@ namespace ContainerSchipNew.Logic
                 if (container.Cooled) { _cooled = _cooled + container.Weight; }
             }
 
+            //Custom exceptions
             if (containers.Select(c => c.Weight).Sum() < this.Ship.MinWeight || containers.Select(c => c.Weight).Sum() > this.Ship.MaxWeight)
             {
                 throw new ExceptionHandler($"Please take a closer look to the ships min and max weight!");
@@ -106,6 +108,7 @@ namespace ContainerSchipNew.Logic
                 }
                 if (container.Valuable)
                 {
+                    //Add container to location where valuables containers are permitted
                     if (this.Ship.Places[0].AddContainer(container) || this.Ship.Places[2].AddContainer(container) || this.Ship.Places[3].AddContainer(container) || this.Ship.Places[5].AddContainer(container))
                     {
                         continue;
@@ -113,6 +116,7 @@ namespace ContainerSchipNew.Logic
                 }
                 if (container.Cooled)
                 {
+                    // Simple true and false checker to switch between the two front sides
                     if (placement)
                     {
                         if (this.Ship.Places[2].AddContainer(container))
@@ -132,6 +136,7 @@ namespace ContainerSchipNew.Logic
                 }
                 else
                 {
+                    //Counter to reset and let each container try a different list
                     for (int i = _counter; i < 6; i++)
                     {
                         if (this.Ship.Places[i].AddContainer(container))
@@ -154,7 +159,10 @@ namespace ContainerSchipNew.Logic
             return true;
         }
 
-
+        /// <summary>
+        /// Order the container list First Valuable then cooled and last normal;
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Container> OrderContainers()
         {
             var _cooled = new List<Container>();
@@ -162,7 +170,7 @@ namespace ContainerSchipNew.Logic
             var _normal = new List<Container>();
             var _ordendContainers = new List<Container>();
 
-            //TODO Gewicht toevoegen
+            // Assigning new list to certain containers
             foreach (var container in containers)
             {
                 if (container.Valuable)
@@ -173,12 +181,13 @@ namespace ContainerSchipNew.Logic
                     _normal.Add(container);
             }
 
+            //Add all sperate lists to one list.
             _ordendContainers.AddRange(_valuable);
             _ordendContainers.AddRange(_cooled);
             _ordendContainers.AddRange(_normal);
             return _ordendContainers;
         }
-
+        
         public List<Place> GetPlace()
         {
             return this.Ship.Places;

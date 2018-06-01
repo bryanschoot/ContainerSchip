@@ -24,6 +24,9 @@ namespace ContainerSchipNew
             this.logic = new Logic.Logic();
         }
 
+        /// <summary>
+        /// Fill the basic items with some value in this one we are filling the Enum to the Dropdown textbox
+        /// </summary>
         private void StartUp()
         {
             var values = Enum.GetValues(typeof(Models.Enum));
@@ -49,10 +52,17 @@ namespace ContainerSchipNew
             AddContainerButton.Enabled = true;
         }
 
+        /// <summary>
+        /// Add container button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddContainerButton_Click(object sender, EventArgs e)
         {
+            //Check if input is not empty
             if (WeightContainerDropdown.Text != String.Empty)
             {
+                //parse enum to usable int
                 var _enum = (Models.Enum)Enum.Parse(typeof(Models.Enum), WeightContainerDropdown.Text);
                 var _valuable = ValuableRadio.Checked;
                 var _cooled = CooledRadio.Checked;
@@ -64,11 +74,15 @@ namespace ContainerSchipNew
             }
             else
             {
+                //show messagebox when text is empty
                 MessageBox.Show("Please choose a container weight!");
             }
         }
 
-
+        /// <summary>
+        /// Update the list of containers
+        /// </summary>
+        /// <param name="containers">List of containers</param>
         private void UpdateContainerList(List<Models.Container> containers)
         {
             double _weight = containers.Select(c => c.Weight).Sum();
@@ -110,10 +124,12 @@ namespace ContainerSchipNew
             placeList5.DataSource = this.logic.GetPlace()[4].Containers;
             placeList6.DataSource = this.logic.GetPlace()[5].Containers;
 
+            //Info about containerlist after sort
             ContainerRow1Label.Text = $"Weight first row: {this.logic.GetPlace()[0].Containers.Select(c => c.Weight).Sum() + this.logic.GetPlace()[1].Containers.Select(c => c.Weight).Sum() + this.logic.GetPlace()[2].Containers.Select(c => c.Weight).Sum()}";
             ContainerRow2Label.Text = $"Weight second row: {this.logic.GetPlace()[3].Containers.Select(c => c.Weight).Sum() + this.logic.GetPlace()[4].Containers.Select(c => c.Weight).Sum() + this.logic.GetPlace()[5].Containers.Select(c => c.Weight).Sum()}";
             ShipLabel.Text = $"{ship.ToString()}\nBalance: {ship.CalculateBalance()}%";
 
+            //Disable all buttons when done
             SortButton.Enabled = false;
             DeleteButton.Enabled = false;
         }

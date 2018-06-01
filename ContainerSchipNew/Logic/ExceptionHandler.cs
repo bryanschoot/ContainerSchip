@@ -6,6 +6,10 @@ namespace ContainerSchipNew.Logic
     {
         public ExceptionHandler() { }
 
+        /// <summary>
+        /// Constructor for custom exception with message.
+        /// </summary>
+        /// <param name="message">Custom message</param>
         public ExceptionHandler(string message) : base(message)
         {
 
